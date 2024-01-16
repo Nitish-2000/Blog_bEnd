@@ -1,10 +1,10 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcrypt";
+import  jwt from "jsonwebtoken";
 
 const hashpassword = async (password) => {
   // var salt = bcrypt.genSalt(Number(process.env.SALT))
   // var input = bcrypt.hash(password)
-  var hash = bcrypt.hash(password, Number(process.env.SALT));
+  var hash = bcrypt.hash(password, Number(process.env.SALT)); //auto-gen a salt and hash)
   return hash;
 };
 const hashcompare = async (password, hashpwd) => {
