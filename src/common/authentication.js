@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import  jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
+dotenv.config()
 
 const hashpassword = async (password) => {
   // var salt = bcrypt.genSalt(Number(process.env.SALT))
@@ -12,7 +14,7 @@ const hashcompare = async (password, hashpwd) => {
 };
 
 const createToken = async (payload) => {
-  token = await jwt.sign(payload, process.env.JWT_Secretkey, {
+  let token = await jwt.sign(payload, process.env.JWT_Secretkey, {
     expiresIn: process.env.JWT_Exp,
   });
   return token;
@@ -42,10 +44,10 @@ const checkrole = async (req, res, next) => {
   let token = req.headers.authorization?.split(" ")[1];
   if (token) {
     let data = await decodetoken(token);
-    if (data.role == "customer") {
+    if (data.role =="admin") {
       next();
-    } else res.status(404).send("Only customers are authorised to login");
+    } else res.status(404).send("Only admins are authorised to login");
   }
 };
 
-module.exports = { hashpassword, hashcompare, createToken, validate,checkrole };
+export default  { hashpassword, hashcompare, createToken, validate,checkrole };

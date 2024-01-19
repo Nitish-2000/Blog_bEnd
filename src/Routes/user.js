@@ -1,9 +1,8 @@
 import express from 'express'
+import userRoutes from '../Controller/user.js'
 const routes = express.Router()
 
-routes.get('/',(req,res)=>{
-    res.status(200).send(`
-    <h1>Hello users</h1>`)
-})
+routes.post('/signup',userRoutes.createUser)
+routes.post('/login',userRoutes.logincheck)
 
 export default routes;
