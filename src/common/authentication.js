@@ -27,8 +27,11 @@ const decodetoken = async (token) => {
 
 const validate = async (req, res, next) => {
   let token = req.headers.authorization?.split(" ")[1];
+
   if (token) {
-    let data = await decodetoken(token);
+    let data = await decodetoken(token); 
+
+    req.headers.userId = data.id
     let currentTime = +new Date() / 1000;
     if (currentTime > data.exp) {
       res.status(400).send({ message: "Session expired" });

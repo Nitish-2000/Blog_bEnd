@@ -35,6 +35,7 @@ const createUser = async (req,res)=>{
   
             if(pwdcheck){
               let token = await pwdAuth.createToken({
+                id:user._id,
                 firstName:user.firstName,
                 lastName:user.lastName,
                 email:user.email,
