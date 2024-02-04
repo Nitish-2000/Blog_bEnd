@@ -13,6 +13,7 @@ routes.put(
   blogRoutes.updateBlogStatus
 );
 routes.get("/", auth.validate, auth.checkrole, blogRoutes.getAllBlogs);
-routes.get("/:id", auth.validate, blogRoutes.getBlogsById);
+routes.get("/:id", blogRoutes.getBlogsById);
+routes.delete("/delete/:id",blogRoutes.deleteblog) 
 
 export default routes;

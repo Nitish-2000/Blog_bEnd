@@ -6,7 +6,7 @@ const blogSchema = mongoose.Schema(
     imageUrl: { type: String, required: [true, "Url is Required"] },
     description: { type: String, required: [true, "descryption is Required"] },
     status: { type: String, default: "pending" },
-    createdBy: { type: String, required: [true, " Creator name is required"] },
+    createdBy: { type: String, /*required: [true, " Creator name is required"]*/ },
     approvedBy: { type: String },
     modifiedAt: { type: Date },
     rejectedBy: { type: String },

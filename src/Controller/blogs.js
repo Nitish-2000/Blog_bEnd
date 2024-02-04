@@ -8,9 +8,9 @@ const createBlogs = async (req, res) => {
         title,
         imageUrl,
         description,
-        createdBy: req.headers.userId,
+        createdBy: req.headers.userId
       });
-      res.status(200).send({
+      res.status(201).send({
         message: "Blog submitted and send for Approval!",
       });
     } else {
@@ -35,6 +35,7 @@ const editBlog = async (req, res) => {
         blog.title = title;
         blog.imageUrl = imageUrl;
         blog.description = description;
+        blog.status="pending",
         blog.modifiedAt = Date.now();
 
         await blog.save();
@@ -53,10 +54,10 @@ const editBlog = async (req, res) => {
 
 const getBlogByUserId = async (req, res) => {
   try {
-    let userBlogs = await blogModel.find({ createdBy: req.headers.userId });
+    let userBlogs = await blogModel.find({createdBy:req.headers.userId},{reason:0,__v:0});
     res.status(200).send({
       message: "Blogs retrived",
-      userBlogs,
+      userBlogs,  
     });
   } catch (error) {
     res.status(400).send(error.message);
@@ -74,8 +75,8 @@ const updateBlogStatus = async (req, res) => {
         blog.status = "approved";
         blog.approvedBy = req.headers.id;
       } else if (status === "rejected") {
-        blog.status == "rejected";
-        blog.reason = reason;
+        blog.status = "rejected";
+        // blog.reason = reason;
         blog.approvedBy = req.headers.id;
       } else {
         blog.status = "pending";
@@ -94,10 +95,10 @@ const updateBlogStatus = async (req, res) => {
 
 const getAllBlogs = async (req, res) => {
   try {
-    let blogs = await blogModel.find({}).sort({ creaatedAt: 1 });
+    let userBlogs = await blogModel.find({}).sort({ creaatedAt: 1 });
     res.status(200).send({
       message: "blogs Fetched Successfully",
-      blogs,
+      userBlogs,
     });
   } catch (error) {
     res.status(400).send(error.message);
@@ -112,7 +113,7 @@ const getBlogsById = async (req, res) => {
 
       res.status(200).send({
         message: "Blog fetched",
-        blog,
+        blog
       });
     } else {
       res.status(400).send({
@@ -124,6 +125,21 @@ const getBlogsById = async (req, res) => {
   }
 };
 
+const deleteblog = async(req,res)=>{
+  try {
+    let blogId = req.params.id;
+    if(blogId){
+      let res = await blogModel.deleteOne({_id:blogId})
+      res.send({
+        message:"blog Deleted"
+      })
+    }
+
+  } catch (error) {
+    
+  }
+}
+
 export default {
   createBlogs,
   editBlog,
@@ -131,4 +147,5 @@ export default {
   updateBlogStatus,
   getAllBlogs,
   getBlogsById,
+  deleteblog
 };
